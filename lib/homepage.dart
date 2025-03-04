@@ -1,3 +1,4 @@
+import 'package:filmtok/signin.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
@@ -5,6 +6,6 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Home Page")));
+    return Signin();
   }
 }
