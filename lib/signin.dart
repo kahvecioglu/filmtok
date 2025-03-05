@@ -12,7 +12,9 @@ class Signin extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
+              SizedBox(height: 296),
               Text(
                 "Merhabalar",
                 style: TextStyle(
@@ -25,7 +27,7 @@ class Signin extends StatelessWidget {
               Text(
                 "Tempus varius a vitae interdum id\ntortor elementum tristique eleifend at.",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white70, fontSize: 14),
+                style: TextStyle(color: Colors.white, fontSize: 14),
               ),
               SizedBox(height: 32),
 
@@ -44,7 +46,7 @@ class Signin extends StatelessWidget {
                 obscureText: true,
                 suffixIcon: Icons.visibility_off,
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 25),
 
               // Şifremi Unuttum
               Align(
@@ -64,18 +66,18 @@ class Signin extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  minimumSize: Size(double.infinity, 50),
+                  backgroundColor: const Color.fromARGB(255, 255, 0, 0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(16),
                   ),
+                  minimumSize: Size(330, 47), // Genişlik: 200, Yükseklik: 50
                 ),
                 child: Text(
                   "Giriş Yap",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
 
               // Sosyal Medya Giriş Butonları
               Row(
@@ -85,7 +87,7 @@ class Signin extends StatelessWidget {
                   SizedBox(width: 16),
                   _buildSocialButton(FontAwesomeIcons.apple),
                   SizedBox(width: 16),
-                  _buildSocialButton(FontAwesomeIcons.facebook),
+                  _buildSocialButton(FontAwesomeIcons.facebookF),
                 ],
               ),
               SizedBox(height: 20),
@@ -145,8 +147,15 @@ class Signin extends StatelessWidget {
         filled: true,
         fillColor: Colors.white10,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none, // Varsayılan border
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide(
+            color: const Color.fromARGB(56, 158, 158, 158),
+            width: 1,
+          ), // Normal border
         ),
       ),
     );
@@ -160,8 +169,12 @@ class Signin extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white10,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: const Color.fromARGB(68, 158, 158, 158), // gri çizgi
+          width: 1, // Çizginin kalınlığı
+        ),
       ),
-      child: FaIcon(icon, color: Colors.white, size: 24),
+      child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
     );
   }
 }
