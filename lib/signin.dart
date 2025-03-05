@@ -1,3 +1,5 @@
+import 'package:filmtok/homepage.dart';
+import 'package:filmtok/profile_photo.dart';
 import 'package:filmtok/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -64,7 +66,14 @@ class Signin extends StatelessWidget {
 
               // Giriş Yap Butonu
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePhotoScreen(),
+                    ), // Signup sayfasına yönlendirir
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 255, 0, 0),
                   shape: RoundedRectangleBorder(

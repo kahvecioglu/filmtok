@@ -1,4 +1,5 @@
 import 'package:filmtok/homepage.dart';
+import 'package:filmtok/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -37,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed:
                       () => Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
+                        MaterialPageRoute(builder: (context) => Signin()),
                       ),
                   child: Text(
                     "Atla",
@@ -109,9 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         _currentIndex == _pages.length - 1
                             ? () => Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => Homepage(),
-                              ),
+                              MaterialPageRoute(builder: (context) => Signin()),
                             )
                             : null,
                     child: Text("Başla"),
