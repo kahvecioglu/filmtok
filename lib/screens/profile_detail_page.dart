@@ -1,4 +1,6 @@
+// profile_screen.dart
 import 'package:flutter/material.dart';
+import '../cards/card_profile_detay.dart'; // MovieCardd widget'ını buraya import ettik
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -18,6 +20,7 @@ class ProfileScreen extends StatelessWidget {
           "Profil Detayı",
           style: TextStyle(color: Colors.white),
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
                 const CircleAvatar(
                   radius: 35,
                   backgroundImage: NetworkImage(
-                    "https://source.unsplash.com/100x100/?woman,portrait",
+                    "https://st3.depositphotos.com/6672868/14217/v/450/depositphotos_142179970-stock-illustration-user-profile-icon.jpg",
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -80,10 +83,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
-
-            // Beğendiğim Filmler Başlığı
             const Text(
               "Beğendiğim Filmler",
               style: TextStyle(
@@ -92,10 +92,7 @@ class ProfileScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 10),
-
-            // Film Listesi
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -133,49 +130,6 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-// Film Kartı Widget
-class MovieCardd extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String subtitle;
-
-  const MovieCardd({
-    required this.imageUrl,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.network(
-            imageUrl,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: 150,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          subtitle,
-          style: const TextStyle(color: Colors.grey, fontSize: 12),
-        ),
-      ],
     );
   }
 }

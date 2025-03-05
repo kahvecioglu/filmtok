@@ -1,94 +1,79 @@
-import 'package:filmtok/signin.dart';
+import 'package:filmtok/screens/homepage.dart';
+import 'package:filmtok/screens/profile_photo.dart';
+import 'package:filmtok/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SignupPage extends StatefulWidget {
-  @override
-  _SignupPageState createState() => _SignupPageState();
-}
-
-class _SignupPageState extends State<SignupPage> {
+class Signin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(30.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+
             children: [
-              SizedBox(height: 100),
+              SizedBox(height: 296),
               Text(
-                'Hoşgeldiniz',
+                "Merhabalar",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 8),
               Text(
-                'Tempus varius a vitae interdum id tortor elementum tristique eleifend at.',
-                style: TextStyle(color: Colors.white),
+                "Tempus varius a vitae interdum id\ntortor elementum tristique eleifend at.",
                 textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 14),
               ),
-              SizedBox(height: 38),
-              _buildTextField(
-                hintText: "Ad Soyad",
-                icon: FontAwesomeIcons.user,
-                obscureText: true,
-              ),
-              SizedBox(height: 15),
+              SizedBox(height: 32),
+
+              // E-Posta Girişi
               _buildTextField(
                 hintText: "E-Posta",
-                icon: FontAwesomeIcons.envelope,
-                obscureText: true,
+                icon: Icons.mail_outline,
+                obscureText: false,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 16),
+
+              // Şifre Girişi
               _buildTextField(
                 hintText: "Şifre",
-                icon: FontAwesomeIcons.lock,
+                icon: Icons.lock_outline,
                 obscureText: true,
                 suffixIcon: Icons.visibility_off,
               ),
-              SizedBox(height: 15),
-              _buildTextField(
-                hintText: "Şifre Tekrarı",
-                icon: FontAwesomeIcons.lock,
-                obscureText: true,
+              SizedBox(height: 25),
+
+              // Şifremi Unuttum
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Şifremi unuttum",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               ),
               SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Kullanıcı sözleşmesini ',
-                        style: TextStyle(color: Colors.grey),
-                        children: [
-                          TextSpan(
-                            text: 'okudum ve kabul ediyorum',
-                            style: TextStyle(
-                              color: Colors.white,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2,
-                            ),
-                          ),
-                          TextSpan(
-                            text:
-                                '. Bu sözleşmeyi okuyarak devam ediniz lütfen.',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 35),
+
+              // Giriş Yap Butonu
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePhotoScreen(),
+                    ), // Signup sayfasına yönlendirir
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 255, 0, 0),
                   shape: RoundedRectangleBorder(
@@ -97,12 +82,13 @@ class _SignupPageState extends State<SignupPage> {
                   minimumSize: Size(330, 47), // Genişlik: 200, Yükseklik: 50
                 ),
                 child: Text(
-                  'Şimdi Kaydol',
-                  style: TextStyle(color: Colors.white),
+                  "Giriş Yap",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
+              SizedBox(height: 30),
 
-              SizedBox(height: 35),
+              // Sosyal Medya Giriş Butonları
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -114,28 +100,30 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
               SizedBox(height: 20),
+
+              // Kayıt Ol Linki
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Zaten bir hesabın var mı? ',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ), // Gri renkte normal text
+                    "Bir hesabın yok mu?",
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
                   ),
+                  SizedBox(width: 5),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Signin(),
+                          builder: (context) => SignupPage(),
                         ), // Signup sayfasına yönlendirir
                       );
                     },
                     child: Text(
-                      'Giriş Yap!',
+                      "Kayıt Ol!",
                       style: TextStyle(
                         color: Colors.white,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

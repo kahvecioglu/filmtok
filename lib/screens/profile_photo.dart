@@ -1,4 +1,4 @@
-import 'package:filmtok/homepage.dart';
+import 'package:filmtok/screens/homepage.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePhotoScreen extends StatelessWidget {
