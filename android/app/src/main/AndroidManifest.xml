@@ -4,6 +4,7 @@
     <application
         android:label="filmtok"
         android:name="${applicationName}"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -19,8 +20,10 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
+             
               android:resource="@style/NormalTheme"
+               android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="false"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
