@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onPressed: () {
                                         favoriteMovies.toggleFavorite(movie);
 
-                                        // EKLENEN/ÇIKARILAN FİLMLERİ TERMİNALE YAZDIR
+                                        // EKLENEN/ÇIKARILAN FİLMLERİ TERMİNALE YAZDIRDIM
 
                                         print(
                                           "Favori Filmler: ${favoriteMovies.favoriteMovies.toString()}",

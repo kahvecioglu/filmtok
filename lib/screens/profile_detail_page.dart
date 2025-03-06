@@ -1,6 +1,7 @@
-// profile_screen.dart
 import 'package:flutter/material.dart';
-import '../cards/card_profile_detay.dart'; // MovieCardd widget'ını buraya import ettik
+import 'package:provider/provider.dart';
+import '../state_management/favorite_provider.dart'; // Provider dosyanı ekledik
+import '../cards/card_profile_detay.dart'; // MovieCardd bileşenini ekledik
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -93,38 +94,38 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+
+            // Consumer ile Favori Filmleri Göster
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.7,
-                children: [
-                  MovieCardd(
-                    imageUrl:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNg5NCXA36zZ1OEQGLHDpjqsSM9lypoKLf5w&s",
-                    title: "Aşk, Ekmek, Hayaller",
-                    subtitle: "Adam Yapım",
-                  ),
-                  MovieCardd(
-                    imageUrl:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNg5NCXA36zZ1OEQGLHDpjqsSM9lypoKLf5w&s",
-                    title: "Gece Karanlık",
-                    subtitle: "Fox Studios",
-                  ),
-                  MovieCardd(
-                    imageUrl:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNg5NCXA36zZ1OEQGLHDpjqsSM9lypoKLf5w&s",
-                    title: "Aşk, Ekmek, Hayaller",
-                    subtitle: "Adam Yapım",
-                  ),
-                  MovieCardd(
-                    imageUrl:
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNg5NCXA36zZ1OEQGLHDpjqsSM9lypoKLf5w&s",
-                    title: "Gece Karanlık",
-                    subtitle: "Fox Studios",
-                  ),
-                ],
+              child: Consumer<FavoriteMoviesProvider>(
+                builder: (context, favoriteMoviesProvider, child) {
+                  final favoriteMovies = favoriteMoviesProvider.favoriteMovies;
+
+                  // Eğer hiç favori film yoksa mesaj göster
+                  if (favoriteMovies.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "Henüz favori film eklenmedi.",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    );
+                  }
+
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.7,
+                    children:
+                        favoriteMovies.map((movie) {
+                          return MovieCardd(
+                            imageUrl: movie['imageUrl'] ?? '',
+                            title: movie['title'] ?? 'Bilinmeyen Film',
+                            subtitle: "Favori Film",
+                          );
+                        }).toList(),
+                  );
+                },
               ),
             ),
           ],
