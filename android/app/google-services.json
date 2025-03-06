@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "531502539289",
+    "project_id": "login-page-7dcf7",
+    "storage_bucket": "login-page-7dcf7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531502539289:android:c9f83cfe25f8398d684088",
+        "android_client_info": {
+          "package_name": "com.example.filmtok"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNKSxAwMqCEZOTPNVZhhWf9B1lh8vyfXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531502539289:android:e65d5e8efa908b7a684088",
+        "android_client_info": {
+          "package_name": "com.example.login_page"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNKSxAwMqCEZOTPNVZhhWf9B1lh8vyfXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

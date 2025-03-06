@@ -1,9 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../state_management/favorite_provider.dart'; // Provider dosyanı ekledik
-import '../cards/card_profile_detay.dart'; // MovieCardd bileşenini ekledik
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../state_management/favorite_provider.dart';
+import '../cards/card_profile_detay.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String userName = "Yükleniyor...";
+  String userId = "ID: ---";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .get();
+
+        if (userDoc.exists) {
+          setState(() {
+            userName = userDoc['fullName'] ?? "Bilinmeyen Kullanıcı";
+            userId = "ID: ${userDoc['id'] ?? '---'}";
+          });
+        }
+      }
+    } catch (e) {
+      print("Kullanıcı verileri alınamadı: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,19 +79,16 @@ class ProfileScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Ayça Aydoğan",
-                      style: TextStyle(
+                    Text(
+                      userName,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const Text(
-                      "ID: 245677",
-                      style: TextStyle(color: Colors.grey),
-                    ),
+                    Text(userId, style: const TextStyle(color: Colors.grey)),
                   ],
                 ),
                 const Spacer(),
