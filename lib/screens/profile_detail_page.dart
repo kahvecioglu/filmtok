@@ -13,11 +13,19 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String userName = "Yükleniyor...";
   String userId = "ID: ---";
+  String fullUserId = "";
 
   @override
   void initState() {
     super.initState();
     _fetchUserData();
+  }
+
+  String _shortenId(String uid) {
+    if (uid.length > 10) {
+      return "${uid.substring(0, 4)}...${uid.substring(uid.length - 4)}";
+    }
+    return uid;
   }
 
   Future<void> _fetchUserData() async {
@@ -33,7 +41,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (userDoc.exists) {
           setState(() {
             userName = userDoc['fullName'] ?? "Bilinmeyen Kullanıcı";
-            userId = "ID: ${userDoc['id'] ?? '---'}";
+            fullUserId = userDoc['id'] ?? '---';
+            userId = "ID: ${_shortenId(fullUserId)}";
           });
         }
       }
@@ -66,7 +75,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Profil bilgileri
             Row(
               children: [
                 const CircleAvatar(
@@ -88,7 +96,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    Text(userId, style: const TextStyle(color: Colors.grey)),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Tam Kullanıcı ID"),
+                              content: SelectableText(fullUserId),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("Kapat"),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: 150, // ID'nin çok uzun olup taşmasını önler
+                        child: Text(
+                          userId,
+                          style: const TextStyle(color: Colors.grey),
+                          softWrap:
+                              true, // Satır sonuna geldiğinde alt satıra geçmesini sağlar
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const Spacer(),
@@ -130,13 +167,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 10),
 
-            // Consumer ile Favori Filmleri Göster
             Expanded(
               child: Consumer<FavoriteMoviesProvider>(
                 builder: (context, favoriteMoviesProvider, child) {
                   final favoriteMovies = favoriteMoviesProvider.favoriteMovies;
 
-                  // Eğer hiç favori film yoksa mesaj göster
                   if (favoriteMovies.isEmpty) {
                     return const Center(
                       child: Text(
