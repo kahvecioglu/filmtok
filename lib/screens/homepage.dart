@@ -1,3 +1,4 @@
+import 'dart:math'; // Rastgele sayı üretmek için
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:filmtok/services/movieapi.dart';
@@ -12,11 +13,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  final PageController _pageController =
-      PageController(); // Sayfa konumunu tutar
+  final PageController _pageController = PageController();
   List<dynamic> _movies = [];
   bool _isLoading = true;
   int _currentPage = 1;
+  final int _totalPages = 500; // TMDb API maksimum sayfa sınırı 500
 
   @override
   void initState() {
@@ -26,10 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> fetchMovies() async {
     var movieApiService = MovieApiService();
-    List<dynamic> movies = await movieApiService.fetchMovies(_currentPage);
+
+    // 1 ile 500 arasında rastgele bir sayfa seç
+    int randomPage = Random().nextInt(500) + 1;
+
+    var response = await movieApiService.fetchMovies(randomPage);
 
     setState(() {
-      _movies = movies;
+      _movies = response;
+      _currentPage = randomPage;
       _isLoading = false;
     });
   }
@@ -39,10 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [
-          _buildHomeContent(), // Home içeriği ayrı bir metodda
-          ProfileScreen(),
-        ],
+        children: [_buildHomeContent(), ProfileScreen()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
@@ -62,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return _isLoading
         ? Center(child: CircularProgressIndicator())
         : PageView.builder(
-          controller: _pageController, // Sayfa konumunu kaydeder
+          controller: _pageController,
           scrollDirection: Axis.vertical,
           itemCount: _movies.length,
           itemBuilder: (context, index) {
@@ -100,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           favoriteMovies.toggleFavorite(movie);
                           print(
-                            "Favori Filmler: ${favoriteMovies.favoriteMovies.toString()}",
+                            "Favori Filmler: ${favoriteMovies.favoriteMovies}",
                           );
                         },
                       );
