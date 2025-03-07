@@ -126,13 +126,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () async {
               try {
                 await FirebaseAuth.instance.signOut();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Center(child: Text("Çıkış başarılı.")),
+                    backgroundColor: Colors.green,
+                    duration: Duration(seconds: 2),
+                  ),
+                );
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => Signin(),
-                  ), // Giriş ekranına yönlendir
+                  MaterialPageRoute(builder: (context) => Signin()),
                 );
               } catch (e) {
-                print("Çıkış yapılırken hata oluştu: $e");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Çıkış yapılırken hata oluştu: $e"),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 2),
+                  ),
+                );
               }
             },
           ),
