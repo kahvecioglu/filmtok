@@ -48,6 +48,7 @@ class _SignupPageState extends State<SignupPage> {
           "email": _emailController.text.trim(),
           "profileUrl": "",
           "createdAt": FieldValue.serverTimestamp(),
+          "favoriteMovies": [],
         });
 
         _showSuccess("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...");

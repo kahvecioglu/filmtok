@@ -1,9 +1,11 @@
+import 'package:filmtok/screens/teklif.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../state_management/favorite_provider.dart';
 import '../cards/card_profile_detay.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -69,6 +71,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 255, 17, 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) {
+                    return TeklifSayfasi();
+                  },
+                );
+              },
+
+              icon: const FaIcon(
+                FontAwesomeIcons.solidGem, // Alternatif elmas ikonu
+                color: Colors.white,
+                size: 18,
+              ),
+
+              label: const Text(
+                "Sınırlı Teklif",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -116,43 +156,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         );
                       },
-                      child: Container(
-                        width: 150, // ID'nin çok uzun olup taşmasını önler
+                      child: SizedBox(
+                        width: 150,
                         child: Text(
                           userId,
                           style: const TextStyle(color: Colors.grey),
-                          softWrap:
-                              true, // Satır sonuna geldiğinde alt satıra geçmesini sağlar
+                          softWrap: true,
                         ),
                       ),
                     ),
                   ],
                 ),
                 const Spacer(),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text("Sınırlı Teklif"),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 17, 0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text("Fotoğraf Ekle"),
-                    ),
-                  ],
+                  ),
+                  onPressed: () {
+                    // Fotoğraf ekleme işlemi buraya eklenecek
+                  },
+                  child: const Text(
+                    "Fotoğraf Ekle",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -192,6 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             imageUrl: movie['imageUrl'] ?? '',
                             title: movie['title'] ?? 'Bilinmeyen Film',
                             subtitle: "Favori Film",
+                            movie: movie,
+                            movieId: movie["id"],
                           );
                         }).toList(),
                   );

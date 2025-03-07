@@ -23,6 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     fetchMovies();
+    // Favori filmleri Firestore'dan çekip provider'a ekle
+    Future.microtask(
+      () =>
+          Provider.of<FavoriteMoviesProvider>(
+            context,
+            listen: false,
+          ).fetchFavoriteMovies(),
+    );
   }
 
   Future<void> fetchMovies() async {

@@ -23,7 +23,7 @@ class _SigninState extends State<Signin> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ProfilePhotoScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
