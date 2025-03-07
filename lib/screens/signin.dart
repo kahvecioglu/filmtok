@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:filmtok/screens/homepage.dart';
 import 'package:filmtok/screens/profile_photo.dart';
 import 'package:filmtok/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Signin extends StatefulWidget {
   @override
@@ -30,6 +32,72 @@ class _SigninState extends State<Signin> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Giriş başarısız: ${e.toString()}")),
+      );
+    }
+  }
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null)
+        return; // Kullanıcı giriş yapmazsa işlemi iptal et
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(user.uid)
+                .get();
+
+        if (!userDoc.exists) {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(user.uid)
+              .set({
+                "id": user.uid,
+                "fullName": user.displayName ?? "", // Kullanıcı adı varsa ekle
+                "email": user.email,
+                "profileUrl": "", // Profil fotoğrafı varsa ekle
+                "createdAt": FieldValue.serverTimestamp(),
+                "favoriteMovies": [],
+              });
+        }
+
+        // ✅ Kullanıcıya giriş başarılı mesajı göster
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(child: Text('Google ile giriş başarılı!')),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // ✅ HomeScreen sayfasına yönlendir
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
+    } catch (e) {
+      print("Google ile giriş başarısız: $e");
+
+      // ❌ Kullanıcıya hata mesajı göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Google ile giriş başarısız!'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -86,12 +154,18 @@ class _SigninState extends State<Signin> {
                 SizedBox(height: 25),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Şifremi unuttum",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      decoration: TextDecoration.underline,
+                  child: TextButton(
+                    onPressed: () {
+                      // Şifremi unuttum işlemine yönlendir
+                      print("Şifremi unuttum butonuna basıldı.");
+                    },
+                    child: Text(
+                      "Şifremi unuttum",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ),
@@ -114,11 +188,11 @@ class _SigninState extends State<Signin> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialButton(FontAwesomeIcons.google),
+                    _buildSocialButton(FontAwesomeIcons.google, "google"),
                     SizedBox(width: 16),
-                    _buildSocialButton(FontAwesomeIcons.apple),
+                    _buildSocialButton(FontAwesomeIcons.apple, "apple"),
                     SizedBox(width: 16),
-                    _buildSocialButton(FontAwesomeIcons.facebookF),
+                    _buildSocialButton(FontAwesomeIcons.facebookF, "facebook"),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -193,16 +267,30 @@ class _SigninState extends State<Signin> {
     );
   }
 
-  Widget _buildSocialButton(IconData icon) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white10,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade700, width: 1),
+  Widget _buildSocialButton(IconData icon, String a) {
+    return InkWell(
+      onTap: () {
+        if (a == "google") {
+          signInWithGoogle(context);
+        } else if (a == "apple") {
+          // Apple ile giriş yapma metodunuzu çağırın
+        } else if (a == "facebook") {
+          // Facebook ile giriş yapma metodunuzu çağırın
+        }
+      },
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white10,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: const Color.fromARGB(68, 158, 158, 158),
+            width: 1,
+          ),
+        ),
+        child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
       ),
-      child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
     );
   }
 }

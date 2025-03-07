@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:filmtok/screens/homepage.dart';
 import 'package:filmtok/screens/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -16,6 +18,10 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  // Bool değişkenleri: Şifre görünürlüğünü kontrol etmek için
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   Future<void> _signup() async {
     String adSoyad = _nameController.text.trim();
@@ -84,6 +90,72 @@ class _SignupPageState extends State<SignupPage> {
       }
     } catch (e) {
       _showError("Kayıt başarısız: ${e.toString()}");
+    }
+  }
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null)
+        return; // Kullanıcı giriş yapmazsa işlemi iptal et
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(user.uid)
+                .get();
+
+        if (!userDoc.exists) {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(user.uid)
+              .set({
+                "id": user.uid,
+                "fullName": user.displayName ?? "", // Kullanıcı adı varsa ekle
+                "email": user.email,
+                "profileUrl": "", // Profil fotoğrafı varsa ekle
+                "createdAt": FieldValue.serverTimestamp(),
+                "favoriteMovies": [],
+              });
+        }
+
+        // ✅ Kullanıcıya giriş başarılı mesajı göster
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(child: Text('Google ile giriş başarılı!')),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // ✅ HomeScreen sayfasına yönlendir
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
+    } catch (e) {
+      print("Google ile giriş başarısız: $e");
+
+      // ❌ Kullanıcıya hata mesajı göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Google ile giriş başarısız!'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -163,15 +235,30 @@ class _SignupPageState extends State<SignupPage> {
                 controller: _passwordController,
                 hintText: "Şifre",
                 icon: FontAwesomeIcons.lock,
-                obscureText: true,
-                suffixIcon: Icons.visibility_off,
+                obscureText: _obscurePassword,
+                suffixIcon:
+                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                onSuffixTap: () {
+                  setState(() {
+                    _obscurePassword = !_obscurePassword;
+                  });
+                },
               ),
               SizedBox(height: 15),
               _buildTextField(
                 controller: _confirmPasswordController,
                 hintText: "Şifre Tekrarı",
                 icon: FontAwesomeIcons.lock,
-                obscureText: true,
+                obscureText: _obscureConfirmPassword,
+                suffixIcon:
+                    _obscureConfirmPassword
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                onSuffixTap: () {
+                  setState(() {
+                    _obscureConfirmPassword = !_obscureConfirmPassword;
+                  });
+                },
               ),
               SizedBox(height: 20),
               Row(
@@ -220,11 +307,11 @@ class _SignupPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialButton(FontAwesomeIcons.google),
+                  _buildSocialButton(FontAwesomeIcons.google, "google"),
                   SizedBox(width: 16),
-                  _buildSocialButton(FontAwesomeIcons.apple),
+                  _buildSocialButton(FontAwesomeIcons.apple, "apple"),
                   SizedBox(width: 16),
-                  _buildSocialButton(FontAwesomeIcons.facebookF),
+                  _buildSocialButton(FontAwesomeIcons.facebookF, "facebook"),
                 ],
               ),
               SizedBox(height: 20),
@@ -265,6 +352,7 @@ class _SignupPageState extends State<SignupPage> {
     required IconData icon,
     bool obscureText = false,
     IconData? suffixIcon,
+    VoidCallback? onSuffixTap,
   }) {
     return TextField(
       controller: controller,
@@ -275,7 +363,12 @@ class _SignupPageState extends State<SignupPage> {
         hintStyle: TextStyle(color: Colors.white60),
         prefixIcon: Icon(icon, color: Colors.white),
         suffixIcon:
-            suffixIcon != null ? Icon(suffixIcon, color: Colors.white) : null,
+            suffixIcon != null
+                ? GestureDetector(
+                  onTap: onSuffixTap,
+                  child: Icon(suffixIcon, color: Colors.white),
+                )
+                : null,
         filled: true,
         fillColor: Colors.white10,
         border: OutlineInputBorder(
@@ -290,19 +383,30 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget _buildSocialButton(IconData icon) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white10,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: const Color.fromARGB(68, 158, 158, 158),
-          width: 1,
+  Widget _buildSocialButton(IconData icon, String a) {
+    return InkWell(
+      onTap: () {
+        if (a == "google") {
+          signInWithGoogle(context);
+        } else if (a == "apple") {
+          // Apple ile giriş yapma metodunuzu çağırın
+        } else if (a == "facebook") {
+          // Facebook ile giriş yapma metodunuzu çağırın
+        }
+      },
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white10,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: const Color.fromARGB(68, 158, 158, 158),
+            width: 1,
+          ),
         ),
+        child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
       ),
-      child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
     );
   }
 }

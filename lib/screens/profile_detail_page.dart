@@ -1,5 +1,6 @@
 import 'package:filmtok/screens/homepage.dart';
 import 'package:filmtok/screens/profile_photo.dart';
+import 'package:filmtok/screens/signin.dart';
 import 'package:filmtok/screens/teklif.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(right: 1),
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 255, 17, 0),
@@ -118,6 +119,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+          ),
+
+          IconButton(
+            icon: const Icon(Icons.exit_to_app, color: Colors.white),
+            onPressed: () async {
+              try {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => Signin(),
+                  ), // Giriş ekranına yönlendir
+                );
+              } catch (e) {
+                print("Çıkış yapılırken hata oluştu: $e");
+              }
+            },
           ),
         ],
       ),
@@ -202,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 17, 0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   onPressed: () {
