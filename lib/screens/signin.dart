@@ -15,6 +15,8 @@ class _SigninState extends State<Signin> {
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  bool _obscurePassword = true; // Şifre gizli mi açık mı başta böyle dedim
+
   Future<void> signIn() async {
     try {
       await _auth.signInWithEmailAndPassword(
@@ -70,8 +72,16 @@ class _SigninState extends State<Signin> {
                   controller: passwordController,
                   hintText: "Şifre",
                   icon: Icons.lock_outline,
-                  obscureText: true,
-                  suffixIcon: Icons.visibility_off,
+                  obscureText: _obscurePassword, // Şifre görünürlüğü
+                  suffixIcon:
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                  onSuffixTap: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
                 ),
                 SizedBox(height: 25),
                 Align(
@@ -152,6 +162,7 @@ class _SigninState extends State<Signin> {
     required IconData icon,
     bool obscureText = false,
     IconData? suffixIcon,
+    VoidCallback? onSuffixTap,
   }) {
     return TextField(
       controller: controller,
@@ -162,7 +173,12 @@ class _SigninState extends State<Signin> {
         hintStyle: TextStyle(color: Colors.white60),
         prefixIcon: Icon(icon, color: Colors.white),
         suffixIcon:
-            suffixIcon != null ? Icon(suffixIcon, color: Colors.white) : null,
+            suffixIcon != null
+                ? GestureDetector(
+                  onTap: onSuffixTap,
+                  child: Icon(suffixIcon, color: Colors.white),
+                )
+                : null,
         filled: true,
         fillColor: Colors.white10,
         border: OutlineInputBorder(

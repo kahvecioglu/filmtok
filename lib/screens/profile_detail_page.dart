@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../state_management/favorite_provider.dart';
 import '../cards/card_profile_detay.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:convert'; // base64encode için
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -18,6 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userName = "Yükleniyor...";
   String userId = "ID: ---";
   String fullUserId = "";
+  // Varsayılan profil fotoğrafı URL'si (fallback)
+  String profilePhotoUrl = "";
 
   @override
   void initState() {
@@ -47,6 +50,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userName = userDoc['fullName'] ?? "Bilinmeyen Kullanıcı";
             fullUserId = userDoc['id'] ?? '---';
             userId = "ID: ${_shortenId(fullUserId)}";
+            // profileUrl varsa onu kullan, yoksa varsayılanı bırak.
+            if (userDoc['profileUrl'] != null &&
+                userDoc['profileUrl'].toString().isNotEmpty) {
+              profilePhotoUrl = userDoc['profileUrl'];
+            }
           });
         }
       }
@@ -100,13 +108,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 );
               },
-
               icon: const FaIcon(
-                FontAwesomeIcons.solidGem, // Alternatif elmas ikonu
+                FontAwesomeIcons.solidGem,
                 color: Colors.white,
                 size: 18,
               ),
-
               label: const Text(
                 "Sınırlı Teklif",
                 style: TextStyle(color: Colors.white),
@@ -122,12 +128,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Row(
               children: [
-                const CircleAvatar(
+                // Artık profil fotoğrafı URL'sini kullanıyoruz.
+                CircleAvatar(
                   radius: 35,
-                  backgroundImage: NetworkImage(
-                    "https://st3.depositphotos.com/6672868/14217/v/450/depositphotos_142179970-stock-illustration-user-profile-icon.jpg",
-                  ),
+                  backgroundColor: Colors.grey, // Arkaplan rengi
+                  backgroundImage:
+                      profilePhotoUrl.isNotEmpty
+                          ? MemoryImage(
+                            base64Decode(profilePhotoUrl),
+                          ) // Base64'ü çözüp göster
+                          : null, // Eğer boşsa varsayılan göster
+                  child:
+                      profilePhotoUrl.isEmpty
+                          ? Icon(
+                            Icons.person,
+                            size: 35,
+                            color: Colors.white,
+                          ) // Varsayılan ikon
+                          : null,
                 ),
+
                 const SizedBox(width: 16),
                 // Expanded kullanarak metin alanının esnemesini sağlıyoruz.
                 Expanded(
@@ -142,7 +162,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                         softWrap: true,
-
                         overflow: TextOverflow.visible,
                         maxLines: 2,
                       ),
@@ -179,7 +198,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                // Expanded ile sarılmış alan sayesinde Spacer'a gerek kalmaz.
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 17, 0),
@@ -202,7 +220,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
             const Text(
               "Beğendiğim Filmler",
@@ -213,12 +230,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 10),
-
             Expanded(
               child: Consumer<FavoriteMoviesProvider>(
                 builder: (context, favoriteMoviesProvider, child) {
                   final favoriteMovies = favoriteMoviesProvider.favoriteMovies;
-
                   if (favoriteMovies.isEmpty) {
                     return const Center(
                       child: Text(
@@ -227,7 +242,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     );
                   }
-
                   return GridView.count(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,

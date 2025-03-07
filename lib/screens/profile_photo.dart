@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:convert'; // base64encode için
 import 'package:filmtok/screens/homepage.dart';
 import 'package:filmtok/screens/profile_detail_page.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,60 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen> {
     }
   }
 
-  Future<void> _uploadImage() async {}
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      final bytes = await _image!.readAsBytes();
+      String base64Image = base64Encode(bytes);
+
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(user.uid)
+            .update({"profileUrl": base64Image});
+      }
+
+      setState(() {
+        _isUploading = false;
+      });
+
+      // ✅ Yükleme başarılı olduğunda Snackbar göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("✅ Profil fotoğrafınız başarıyla yüklendi!"),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 3),
+        ),
+      );
+
+      // 1 saniye sonra ProfileScreen'e yönlendir
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
+        );
+      });
+    } catch (e) {
+      print("Resim yüklenirken hata oluştu: $e");
+      setState(() {
+        _isUploading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("❌ Resim yüklenirken hata oluştu, tekrar deneyin."),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
