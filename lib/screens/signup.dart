@@ -18,16 +18,42 @@ class _SignupPageState extends State<SignupPage> {
       TextEditingController();
 
   Future<void> _signup() async {
-    if (_passwordController.text != _confirmPasswordController.text) {
+    String adSoyad = _nameController.text.trim();
+    String email = _emailController.text.trim();
+    String sifre = _passwordController.text.trim();
+    String sifreTekrari = _confirmPasswordController.text.trim();
+
+    // Ad Soyad Kontrolü: En az iki kelime
+    if (adSoyad.split(" ").length < 2) {
+      _showError("Lütfen adınızı ve soyadınızı eksiksiz giriniz.");
+      return;
+    }
+
+    // Geçerli E-posta Kontrolü
+    if (!_isValidEmail(email)) {
+      _showError(
+        "Lütfen geçerli bir e-posta adresi giriniz (ör. mail@gmail.com).",
+      );
+      return;
+    }
+
+    // Şifre Güçlülük Kontrolü
+    if (!_isValidPassword(sifre)) {
+      _showError(
+        "Şifre en az 8 karakter, harf, rakam ve özel karakter içermelidir.",
+      );
+      return;
+    }
+
+    // Şifre Eşleşme Kontrolü
+    if (sifre != sifreTekrari) {
       _showError("Şifreler uyuşmuyor!");
       return;
     }
 
     try {
       // Kullanıcı e-posta ile zaten kayıtlı mı kontrol et
-      var methods = await _auth.fetchSignInMethodsForEmail(
-        _emailController.text.trim(),
-      );
+      var methods = await _auth.fetchSignInMethodsForEmail(email);
       if (methods.isNotEmpty) {
         _showError("Bu e-posta adresi zaten kullanılıyor!");
         return;
@@ -35,17 +61,14 @@ class _SignupPageState extends State<SignupPage> {
 
       // Firebase Authentication ile kullanıcı oluştur
       UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-          );
+          .createUserWithEmailAndPassword(email: email, password: sifre);
 
       User? user = userCredential.user;
       if (user != null) {
         await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
           "id": user.uid,
-          "fullName": _nameController.text.trim(),
-          "email": _emailController.text.trim(),
+          "fullName": adSoyad,
+          "email": email,
           "profileUrl": "",
           "createdAt": FieldValue.serverTimestamp(),
           "favoriteMovies": [],
@@ -64,6 +87,22 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+  // Geçerli e-posta kontrolü için regex (gmail, hotmail, outlook, yahoo)
+  bool _isValidEmail(String email) {
+    String pattern =
+        r"^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com)$";
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(email);
+  }
+
+  // Şifre kontrolü: en az 8 karakter, bir harf, bir rakam ve bir özel karakter içermeli
+  bool _isValidPassword(String password) {
+    String pattern =
+        r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$";
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(password);
+  }
+
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -77,7 +116,7 @@ class _SignupPageState extends State<SignupPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.red,
       ),
     );
   }
@@ -245,10 +284,7 @@ class _SignupPageState extends State<SignupPage> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(
-            color: const Color.fromARGB(56, 158, 158, 158),
-            width: 1,
-          ),
+          borderSide: BorderSide(color: Colors.grey.shade700, width: 1),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'package:filmtok/screens/homepage.dart';
+import 'package:filmtok/screens/profile_photo.dart';
 import 'package:filmtok/screens/teklif.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +65,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
           },
         ),
         title: const Text(
@@ -124,50 +129,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                // Expanded kullanarak metin alanının esnemesini sağlıyoruz.
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        userName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        softWrap: true,
+
+                        overflow: TextOverflow.visible,
+                        maxLines: 2,
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Tam Kullanıcı ID"),
-                              content: SelectableText(fullUserId),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("Kapat"),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: SizedBox(
-                        width: 150,
-                        child: Text(
-                          userId,
-                          style: const TextStyle(color: Colors.grey),
-                          softWrap: true,
+                      const SizedBox(height: 5),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Tam Kullanıcı ID"),
+                                content: SelectableText(fullUserId),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Kapat"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: SizedBox(
+                          width: 150,
+                          child: Text(
+                            userId,
+                            style: const TextStyle(color: Colors.grey),
+                            softWrap: true,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                const Spacer(),
+                // Expanded ile sarılmış alan sayesinde Spacer'a gerek kalmaz.
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 17, 0),
@@ -176,7 +188,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // Fotoğraf ekleme işlemi buraya eklenecek
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePhotoScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
                     "Fotoğraf Ekle",
@@ -185,6 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
+
             const SizedBox(height: 20),
             const Text(
               "Beğendiğim Filmler",
