@@ -188,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green,
       ),
     );
   }

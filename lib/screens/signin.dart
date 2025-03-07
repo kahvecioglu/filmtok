@@ -102,6 +102,35 @@ class _SigninState extends State<Signin> {
     }
   }
 
+  Future<void> resetpassword() async {
+    if (emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Lütfen e-posta adresinizi girin."),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _auth.sendPasswordResetEmail(email: emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Şifre sıfırlama e-postası gönderildi."),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Hata: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,8 +185,7 @@ class _SigninState extends State<Signin> {
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     onPressed: () {
-                      // Şifremi unuttum işlemine yönlendir
-                      print("Şifremi unuttum butonuna basıldı.");
+                      resetpassword();
                     },
                     child: Text(
                       "Şifremi unuttum",
