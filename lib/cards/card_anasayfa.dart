@@ -69,8 +69,9 @@ class _MovieCardState extends State<MovieCard> {
                           widget.title,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'EuclidCircularA',
                           ),
                           overflow:
                               TextOverflow.ellipsis, // Uzun isimlerde "..."
@@ -96,7 +97,12 @@ class _MovieCardState extends State<MovieCard> {
     if (_showFullDescription || description.length <= 75) {
       return Text(
         description,
-        style: TextStyle(color: Colors.white70, fontSize: 16),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
+          fontFamily: 'EuclidCircularA',
+        ),
       );
     } else {
       String shortText = description.substring(0, 75); // İlk 60 karakter
@@ -105,7 +111,12 @@ class _MovieCardState extends State<MovieCard> {
           children: [
             TextSpan(
               text: shortText, // Kısaltılmış açıklama
-              style: TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'EuclidCircularA',
+              ),
             ),
             WidgetSpan(
               child: GestureDetector(
@@ -119,9 +130,10 @@ class _MovieCardState extends State<MovieCard> {
                   child: Text(
                     "Daha Fazlası",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white, // Yazı rengi
+                      fontSize: 13, // Yazı boyutu
+                      fontWeight: FontWeight.w700, // Yazı kalınlığı
+                      fontFamily: 'EuclidCircularA', // Özel font
                     ),
                   ),
                 ),

@@ -28,10 +28,22 @@ class TeklifSayfasi extends StatelessWidget {
           maxChildSize: 0.9,
           builder: (context, scrollController) {
             return Container(
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter, // Üstten başlasın
+                  end: Alignment.bottomCenter, // Altta bitiş
+                  colors: [
+                    const Color.fromARGB(255, 129, 14, 6), // Üst kısmın kırmızı
+                    Colors.black, // Alt kısma doğru siyahlaşma
+                  ],
+                  stops: [0, 0.8], // Üst kırmızı, alt siyah
+                ),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(24), // Üst köşe yuvarlatılmış
+                  bottom: Radius.circular(24), // Alt köşe yuvarlatılmış
+                ),
               ),
+
               child: SingleChildScrollView(
                 controller: scrollController,
                 child: Padding(
@@ -57,8 +69,9 @@ class TeklifSayfasi extends StatelessWidget {
                         "Sınırlı Teklif",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          fontFamily: 'EuclidCircularA',
+                          fontWeight: FontWeight.w600,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -67,8 +80,12 @@ class TeklifSayfasi extends StatelessWidget {
                       // Açıklama
                       const Text(
                         "Jeton paketinizi seçerek bonus kazanın ve\nyeni bölümlerin kilidini açın!",
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
-                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'EuclidCircularA',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       const SizedBox(height: 16),
 
@@ -77,17 +94,36 @@ class TeklifSayfasi extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white10,
-                          borderRadius: BorderRadius.circular(16),
+                          color: const Color.fromARGB(
+                            20,
+                            255,
+                            255,
+                            255,
+                          ), // %3 şeffaf beyaz renk
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(24),
+                            bottom: Radius.circular(24),
+                          ),
+                          border: Border.all(
+                            color: const Color.fromARGB(
+                              29,
+                              255,
+                              255,
+                              255,
+                            ), // %10 şeffaf beyaz border
+                            width: 2, // Kenar kalınlığını ayarlayabilirsiniz
+                          ),
                         ),
+
                         child: Column(
                           children: [
                             const Text(
                               "Alacağınız Bonuslar",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                fontFamily: 'EuclidCircularA',
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             const SizedBox(height: 12),
@@ -121,7 +157,12 @@ class TeklifSayfasi extends StatelessWidget {
                       // Bilgilendirici yazı
                       const Text(
                         "Kilidi açmak için bir jeton paketi seçin",
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontFamily: 'EuclidCircularA',
+                          fontWeight: FontWeight.w500,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
@@ -136,15 +177,11 @@ class TeklifSayfasi extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              17,
-                              0,
-                            ),
+                            backgroundColor: const Color(0xFFE50914),
+
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(18),
                             ),
                           ),
                           onPressed: () {
@@ -153,7 +190,12 @@ class TeklifSayfasi extends StatelessWidget {
                           },
                           child: const Text(
                             "Tüm Jetonları Gör",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'EuclidCircularA',
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
@@ -176,7 +218,12 @@ class TeklifSayfasi extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           yazi,
-          style: const TextStyle(color: Colors.white, fontSize: 12),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontFamily: 'EuclidCircularA',
+            fontWeight: FontWeight.w400,
+          ),
           textAlign: TextAlign.center,
         ),
       ],
@@ -262,19 +309,21 @@ class TeklifSayfasi extends StatelessWidget {
                 children: [
                   Text(
                     eskiJeton,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      decoration: TextDecoration.lineThrough, // Üstü çizili
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontFamily: 'EuclidCircularA',
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     yeniJeton,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      fontFamily: 'EuclidCircularA',
+                      fontWeight: FontWeight.w900,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -283,8 +332,9 @@ class TeklifSayfasi extends StatelessWidget {
                     "Jeton",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      fontFamily: 'EuclidCircularA',
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -292,7 +342,12 @@ class TeklifSayfasi extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 fiyat,
-                style: const TextStyle(color: Colors.white70, fontSize: 14),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontFamily: 'EuclidCircularA',
+                  fontWeight: FontWeight.w400,
+                ),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -311,9 +366,11 @@ class TeklifSayfasi extends StatelessWidget {
             ),
             child: Text(
               indirim,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                fontFamily: 'EuclidCircularA',
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),

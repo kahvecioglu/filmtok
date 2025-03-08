@@ -88,10 +88,39 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: Text('Profil Detayı', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Profil Detayı',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'EuclidCircularA',
+          ),
+        ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Container(
+            height: 44,
+            width: 44,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Color.fromARGB(
+                  26,
+                  255,
+                  255,
+                  255,
+                ), // Kenarlık için %10 beyaz
+                width: 1,
+              ),
+            ),
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 24, // Boyut
+            ),
+          ),
           onPressed:
               () => Navigator.push(
                 context,
@@ -99,70 +128,110 @@ class _ProfilePhotoScreenState extends State<ProfilePhotoScreen> {
               ),
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Fotoğraflarınızı Yükleyin',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: [
+                Text(
+                  'Fotoğraflarınızı Yükleyin',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'EuclidCircularA',
+                  ),
                 ),
-              ),
-              SizedBox(height: 5),
-              Text(
-                'Profil fotoğrafınızı yükleyin.',
-                style: TextStyle(color: Colors.white54, fontSize: 12),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              GestureDetector(
-                onTap: _pickImage,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white12,
-                    borderRadius: BorderRadius.circular(15),
-                    image:
-                        _image != null
-                            ? DecorationImage(
-                              image: FileImage(_image!),
-                              fit: BoxFit.cover,
+                SizedBox(height: 5),
+                Text(
+                  'Resources out incentivize\n relaxation floor loss cc.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontFamily: 'EuclidCircularA',
+                    fontWeight: FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    width: 168,
+                    height: 164,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Color.fromARGB(
+                          26,
+                          255,
+                          255,
+                          255,
+                        ), // Kenarlık için %10 beyaz
+                        width: 1,
+                      ),
+                      image:
+                          _image != null
+                              ? DecorationImage(
+                                image: FileImage(_image!),
+                                fit: BoxFit.cover,
+                              )
+                              : null,
+                    ),
+                    child:
+                        _image == null
+                            ? Icon(
+                              Icons.add,
+                              color: Colors.white.withOpacity(0.5),
+                              size: 26,
                             )
                             : null,
                   ),
-                  child:
-                      _image == null
-                          ? Icon(Icons.add, color: Colors.white, size: 40)
-                          : null,
                 ),
-              ),
-              SizedBox(height: 30),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: SizedBox(
+                  height: 54,
+                  width: 350,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFE50914),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 100,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    onPressed: _isUploading ? null : _uploadImage,
+                    child:
+                        _isUploading
+                            ? CircularProgressIndicator(color: Colors.white)
+                            : Text(
+                              'Devam Et',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontFamily: 'EuclidCircularA',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                   ),
                 ),
-                onPressed: _isUploading ? null : _uploadImage,
-                child:
-                    _isUploading
-                        ? CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                          'Devam Et',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

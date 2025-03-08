@@ -61,9 +61,99 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.grey,
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Anasayfa'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+        items: [
+          BottomNavigationBarItem(
+            icon: Container(
+              width: 125, // Buton genişliği
+              height: 40, // Buton yüksekliği
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(22), // Kenar yuvarlaklığı
+                border: Border.all(
+                  color: Color.fromARGB(
+                    26,
+                    255,
+                    255,
+                    255,
+                  ), // %10 beyaz kenarlık
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Butonları merkezde hizala
+                children: [
+                  Icon(
+                    Icons.home,
+                    color:
+                        _currentIndex == 0
+                            ? Colors.white
+                            : Colors.white, // Her zaman beyaz
+                    size: 24,
+                  ),
+                  SizedBox(width: 4), // Aradaki mesafeyi küçültüyoruz
+                  Text(
+                    'Anasayfa',
+                    style: TextStyle(
+                      color:
+                          _currentIndex == 0
+                              ? Colors.white
+                              : Colors.white, // Her zaman beyaz
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              width: 125, // Buton genişliği
+              height: 40, // Buton yüksekliği
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(22), // Kenar yuvarlaklığı
+                border: Border.all(
+                  color: Color.fromARGB(
+                    26,
+                    255,
+                    255,
+                    255,
+                  ), // %10 beyaz kenarlık
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Butonları merkezde hizala
+                children: [
+                  Icon(
+                    Icons.person,
+                    color:
+                        _currentIndex == 1
+                            ? Colors.white
+                            : Colors.white, // Her zaman beyaz
+                    size: 24,
+                  ),
+                  SizedBox(width: 4), // Aradaki mesafeyi küçültüyoruz
+                  Text(
+                    'Profil',
+                    style: TextStyle(
+                      color:
+                          _currentIndex == 1
+                              ? Colors.white
+                              : Colors.white, // Her zaman beyaz
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            label: '',
+          ),
         ],
       ),
     );
@@ -79,6 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) {
             final movie = {
               'id': _movies[index]['id'],
+              "vote_average": _movies[index]["vote_average"],
               'title': _movies[index]['title'] ?? 'Bilinmeyen Film',
               'description':
                   _movies[index]['overview'] ?? 'Açıklama bulunamadı',
@@ -102,18 +193,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, favoriteMovies, child) {
                       final isFavorite = favoriteMovies.isFavorite(movie['id']);
 
-                      return IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : Colors.white,
-                          size: 30,
+                      return Container(
+                        width: 49, // Konteyner genişliği
+                        height: 71, // Konteyner yüksekliği
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(
+                            0.2,
+                          ), // Arka plan rengi
+                          borderRadius: BorderRadius.circular(
+                            25,
+                          ), // Yuvarlak kenarlar
+                          border: Border.all(
+                            color: Colors.white.withOpacity(
+                              0.5,
+                            ), // %50 beyaz border
+                            width: 1, // Border kalınlığı
+                          ),
                         ),
-                        onPressed: () {
-                          favoriteMovies.toggleFavorite(movie);
-                          print(
-                            "Favori Filmler: ${favoriteMovies.favoriteMovies}",
-                          );
-                        },
+                        child: IconButton(
+                          icon: Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Colors.red : Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            favoriteMovies.toggleFavorite(movie);
+                            print(
+                              "Favori Filmler: ${favoriteMovies.favoriteMovies}",
+                            );
+                          },
+                        ),
                       );
                     },
                   ),

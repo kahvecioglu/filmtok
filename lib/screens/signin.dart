@@ -142,20 +142,28 @@ class _SigninState extends State<Signin> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 296),
+                SizedBox(height: 290),
                 Text(
                   "Merhabalar",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+
+                    fontFamily: 'EuclidCircularA',
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
+
                 SizedBox(height: 8),
                 Text(
                   "Tempus varius a vitae interdum id\ntortor elementum tristique eleifend at.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13,
+                    fontFamily: 'EuclidCircularA',
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
                 SizedBox(height: 32),
                 _buildTextField(
@@ -190,9 +198,11 @@ class _SigninState extends State<Signin> {
                     child: Text(
                       "Şifremi unuttum",
                       style: TextStyle(
+                        fontFamily: 'EuclidCircularA',
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 12,
                         decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
@@ -201,7 +211,7 @@ class _SigninState extends State<Signin> {
                 ElevatedButton(
                   onPressed: signIn,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Color(0xFFE50914),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -209,7 +219,12 @@ class _SigninState extends State<Signin> {
                   ),
                   child: Text(
                     "Giriş Yap",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontFamily: 'EuclidCircularA',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 SizedBox(height: 30),
@@ -229,7 +244,12 @@ class _SigninState extends State<Signin> {
                   children: [
                     Text(
                       "Bir hesabın yok mu?",
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'EuclidCircularA',
+                      ),
                     ),
                     SizedBox(width: 5),
                     TextButton(
@@ -243,8 +263,9 @@ class _SigninState extends State<Signin> {
                         "Kayıt Ol!",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'EuclidCircularA',
                         ),
                       ),
                     ),
@@ -266,30 +287,52 @@ class _SigninState extends State<Signin> {
     IconData? suffixIcon,
     VoidCallback? onSuffixTap,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white60),
-        prefixIcon: Icon(icon, color: Colors.white),
-        suffixIcon:
-            suffixIcon != null
-                ? GestureDetector(
-                  onTap: onSuffixTap,
-                  child: Icon(suffixIcon, color: Colors.white),
-                )
-                : null,
-        filled: true,
-        fillColor: Colors.white10,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: Colors.grey.shade700, width: 1),
+    return SizedBox(
+      width: 324,
+      height: 54,
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: const Color.fromARGB(124, 255, 255, 255),
+            fontSize: 12,
+            fontFamily: 'EuclidCircularA',
+            fontWeight: FontWeight.w400,
+          ),
+          prefixIcon: SizedBox(
+            width: 17,
+            height: 15,
+            child: SizedBox(
+              width: 20,
+              height: 17,
+              child: Icon(
+                icon,
+                color: Color.fromARGB(255, 255, 255, 255),
+                size: 15,
+              ),
+            ),
+          ),
+
+          suffixIcon:
+              suffixIcon != null
+                  ? GestureDetector(
+                    onTap: onSuffixTap,
+                    child: Icon(suffixIcon, color: Colors.white),
+                  )
+                  : null,
+          filled: true,
+          fillColor: Colors.white10,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide(color: Colors.grey.shade700, width: 1),
+          ),
         ),
       ),
     );
@@ -307,17 +350,17 @@ class _SigninState extends State<Signin> {
         }
       },
       child: Container(
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         decoration: BoxDecoration(
-          color: Colors.white10,
+          color: Colors.white.withOpacity(0.1), // İç kısım için %10 beyaz
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: const Color.fromARGB(68, 158, 158, 158),
+            color: Color.fromARGB(51, 255, 255, 255), // Kenarlık için %20 beyaz
             width: 1,
           ),
         ),
-        child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
+        child: Center(child: FaIcon(icon, color: Colors.white, size: 20)),
       ),
     );
   }

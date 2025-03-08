@@ -203,19 +203,25 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 100),
+              SizedBox(height: 110),
               Text(
                 'Hoşgeldiniz',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'EuclidCircularA',
                 ),
               ),
               SizedBox(height: 10),
               Text(
-                'Lütfen bilgilerinizi girerek kayıt olun.',
-                style: TextStyle(color: Colors.white),
+                'Tempus varius a vitae interdum id tortor\n elementum tristique eleifend at.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'EuclidCircularA',
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 38),
@@ -267,11 +273,19 @@ class _SignupPageState extends State<SignupPage> {
                     child: RichText(
                       text: TextSpan(
                         text: 'Kullanıcı sözleşmesini ',
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'EuclidCircularA',
+                        ),
                         children: [
                           TextSpan(
                             text: 'okudum ve kabul ediyorum',
                             style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'EuclidCircularA',
+                              fontSize: 12,
                               color: Colors.white,
                               decoration: TextDecoration.underline,
                               decorationThickness: 2,
@@ -280,7 +294,12 @@ class _SignupPageState extends State<SignupPage> {
                           TextSpan(
                             text:
                                 '. Bu sözleşmeyi okuyarak devam ediniz lütfen.',
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'EuclidCircularA',
+                            ),
                           ),
                         ],
                       ),
@@ -289,18 +308,27 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
               SizedBox(height: 35),
-              ElevatedButton(
-                onPressed: _signup,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 255, 0, 0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+              SizedBox(
+                width: 324,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: _signup,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFE50914),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    minimumSize: Size(330, 47),
                   ),
-                  minimumSize: Size(330, 47),
-                ),
-                child: Text(
-                  'Şimdi Kaydol',
-                  style: TextStyle(color: Colors.white),
+                  child: Text(
+                    'Şimdi Kaydol',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'EuclidCircularA',
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 35),
@@ -320,7 +348,12 @@ class _SignupPageState extends State<SignupPage> {
                 children: [
                   Text(
                     'Zaten bir hesabın var mı? ',
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.5),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'EuclidCircularA',
+                      fontSize: 12,
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
@@ -333,7 +366,9 @@ class _SignupPageState extends State<SignupPage> {
                       'Giriş Yap!',
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'EuclidCircularA',
                       ),
                     ),
                   ),
@@ -354,30 +389,40 @@ class _SignupPageState extends State<SignupPage> {
     IconData? suffixIcon,
     VoidCallback? onSuffixTap,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white60),
-        prefixIcon: Icon(icon, color: Colors.white),
-        suffixIcon:
-            suffixIcon != null
-                ? GestureDetector(
-                  onTap: onSuffixTap,
-                  child: Icon(suffixIcon, color: Colors.white),
-                )
-                : null,
-        filled: true,
-        fillColor: Colors.white10,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: Colors.grey.shade700, width: 1),
+    return SizedBox(
+      height: 54,
+      width: 324,
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(
+            color: Colors.white.withOpacity(0.5),
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            fontFamily: 'EuclidCircularA',
+          ),
+
+          prefixIcon: Icon(icon, color: Colors.white, size: 15),
+          suffixIcon:
+              suffixIcon != null
+                  ? GestureDetector(
+                    onTap: onSuffixTap,
+                    child: Icon(suffixIcon, color: Colors.white, size: 20),
+                  )
+                  : null,
+          filled: true,
+          fillColor: Colors.white10,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide(color: Colors.grey.shade700, width: 1),
+          ),
         ),
       ),
     );
@@ -395,17 +440,17 @@ class _SignupPageState extends State<SignupPage> {
         }
       },
       child: Container(
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
         decoration: BoxDecoration(
-          color: Colors.white10,
+          color: Colors.white.withOpacity(0.1), // İç kısım için %10 beyaz
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: const Color.fromARGB(68, 158, 158, 158),
+            color: Color.fromARGB(51, 255, 255, 255), // Kenarlık için %20 beyaz
             width: 1,
           ),
         ),
-        child: Center(child: FaIcon(icon, color: Colors.white, size: 24)),
+        child: Center(child: FaIcon(icon, color: Colors.white, size: 20)),
       ),
     );
   }

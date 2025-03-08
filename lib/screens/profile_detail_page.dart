@@ -72,17 +72,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
-          },
+          icon: Container(
+            height: 44,
+            width: 44,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Color.fromARGB(
+                  26,
+                  255,
+                  255,
+                  255,
+                ), // Kenarlık için %10 beyaz
+                width: 1,
+              ),
+            ),
+            child: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 24, // Boyut
+            ),
+          ),
+          onPressed:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              ),
         ),
         title: const Text(
           "Profil Detayı",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+
+            fontFamily: 'EuclidCircularA',
+            fontWeight: FontWeight.w500,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -90,14 +116,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.only(right: 1),
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 255, 17, 0),
+                backgroundColor: const Color(0xFFE50914), // Buton rengi
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               ),
               onPressed: () {
                 showModalBottomSheet(
@@ -116,7 +139,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               label: const Text(
                 "Sınırlı Teklif",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontFamily: 'EuclidCircularA',
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -156,9 +184,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Row(
               children: [
-                // Artık profil fotoğrafı URL'sini kullanıyoruz.
                 CircleAvatar(
-                  radius: 35,
+                  radius: 30.5,
                   backgroundColor: Colors.grey, // Arkaplan rengi
                   backgroundImage:
                       profilePhotoUrl.isNotEmpty
@@ -170,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       profilePhotoUrl.isEmpty
                           ? Icon(
                             Icons.person,
-                            size: 35,
+                            size: 61,
                             color: Colors.white,
                           ) // Varsayılan ikon
                           : null,
@@ -184,10 +211,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Text(
                         userName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+
+                          fontFamily: 'EuclidCircularA',
+                          fontWeight: FontWeight.w500,
                         ),
                         softWrap: true,
                         overflow: TextOverflow.visible,
@@ -218,7 +247,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 150,
                           child: Text(
                             userId,
-                            style: const TextStyle(color: Colors.grey),
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.5),
+                              fontSize: 12,
+
+                              fontFamily: 'EuclidCircularA',
+                              fontWeight: FontWeight.w400,
+                            ),
                             softWrap: true,
                           ),
                         ),
@@ -228,10 +263,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 17, 0),
+                    backgroundColor: const Color(0xFFE50914),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    minimumSize: Size(121, 36),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -243,7 +279,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   child: const Text(
                     "Fotoğraf Ekle",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+
+                      fontFamily: 'EuclidCircularA',
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
@@ -253,8 +295,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               "Beğendiğim Filmler",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontSize: 13,
+
+                fontFamily: 'EuclidCircularA',
+                fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 10),
@@ -266,7 +310,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return const Center(
                       child: Text(
                         "Henüz favori film eklenmedi.",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+
+                          fontFamily: 'EuclidCircularA',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     );
                   }
@@ -280,7 +330,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return MovieCardd(
                             imageUrl: movie['imageUrl'] ?? '',
                             title: movie['title'] ?? 'Bilinmeyen Film',
-                            subtitle: "Favori Film",
+                            puan:
+                                movie['vote_average'].toString() ??
+                                "Favori Film",
                             movie: movie,
                             movieId: movie["id"],
                           );
