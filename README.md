@@ -66,3 +66,8 @@ FilmTok, kullanıcıların popüler filmleri keşfedip favorilerine ekleyebildi�
 - Dark/Light mod desteği
 - Film detay sayfası ile daha fazla bilgi sunulması
 
+
+## 📌 Uygulamanın kullanım videosu
+      https://drive.google.com/file/d/17Yz4iqaR5lQ12anwXO-tu6FXoJD-342j/view?usp=sharing
+      
+
