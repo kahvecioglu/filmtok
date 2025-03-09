@@ -1,5 +1,6 @@
 import 'package:filmtok/screens/homepage.dart';
 import 'package:filmtok/screens/signin.dart';
+import 'package:filmtok/splash_and_onboarding/splash_screen.dart';
 import 'package:filmtok/state_management/favorite_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,7 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.hasData) {
           return HomeScreen(); // Kullanıcı giriş yapmışsa HomeScreen'e yönlendir
         } else {
-          return Signin(); // Kullanıcı giriş yapmamışsa giriş ekranına yönlendir
+          return SplashScreen(); // Kullanıcı giriş yapmamışsa giriş ekranına yönlendir
         }
       },
     );

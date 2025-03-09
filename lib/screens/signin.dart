@@ -20,18 +20,28 @@ class _SigninState extends State<Signin> {
   bool _obscurePassword = true; // Şifre gizli mi açık mı başta böyle dedim
 
   Future<void> signIn() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage =
+          "Giriş yapılamadı. Lütfen e-posta ve şifrenizi kontrol ediniz.";
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(errorMessage)));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Giriş başarısız: ${e.toString()}")),
+        SnackBar(
+          content: Text(
+            "Bir hata oluştu. Lütfen e-posta ve şifrenizi kontrol ediniz.",
+          ),
+        ),
       );
     }
   }
