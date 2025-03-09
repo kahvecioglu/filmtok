@@ -35,4 +35,7 @@ flutter:
     - family: EuclidCircularA
       fonts:
         - asset: lib/fonts/Euclid_Circular_A_Regular.ttf
+    - family: Montserrat
+      fonts:
+        - asset: lib/fonts/Montserrat-Regular.ttf  
        
